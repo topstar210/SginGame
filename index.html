@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DogeSpin Casino</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo-link">
+            <a href="#" class="logo">DogeSpin.dog</a>
+        </div>
+        <button id="connectButton" class="connect-button">Connect</button>
+        <p id="addresss-div">Connected Address: <span id="connected-address"></span></p>
+    </header>
+    <main>
+        <div class="balance-box">
+            <div class="balance">
+                <p>Your wDOGE Balance:</p>
+                <p id="wDOGE-balance">Loading...</p>
+            </div>
+            <div class="balance">
+                <p>Your DC WINNINGS:</p>
+                <p id="DC-token-balance">Loading...</p>
+            </div>
+        </div>
+        <div class="slot-machine">
+            <div class="reels">
+                <div class="reel">
+                    <img src="reel/1.png" alt="Reel 1">
+                </div>
+                <div class="reel">
+                    <img src="reel/2.png" alt="Reel 2">
+                </div>
+                <div class="reel">
+                    <img src="reel/3.png" alt="Reel 3">
+                </div>
+            </div>
+            <div class="buttons">
+                <button id="cash-out-button" class="soft-green-button">Cash Out</button>
+                <button id="spin-button" class="red-button">Spin</button>
+            </div>
+            <div>
+                <button id="load-dogespin-button" class="orange-button">Load DogeSpin</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="legal-links">
+            <a href="#">Terms of Service</a> | <a href="#">Odds Information</a>
+        </div>
+        <div class="disclaimer">
+            <p>Before participating in the "DogeSpin.dog" game, it's important to understand the odds associated with
+                different outcomes. The game operates with three rows and seven symbols, offering various possibilities.
+                The odds of winning a basic prize, where any three of the six available symbols match, are approximately
+                1 in 2,929. Achieving a "Double Dogepot" win, which requires two consecutive "Dogepot" symbols in either
+                the first two or last two rows, comes with odds of approximately 1 in 49. For the highest reward, the
+                "Triple Dogepot" win, where all three rows match with the "7.png Dogepot" image, players need three
+                consecutive "Dogepot" symbols, resulting in odds of roughly 1 in 5,439. It's important to note that
+                these odds are approximate and based on the assumption of truly random symbol generation. In all other
+                cases, where there are no matching or consecutive symbols, players do not win. Please be aware that
+                participation in this game involves risk, and outcomes are determined by chance. Ensure you are familiar
+                with the game's rules and potential outcomes before playing, and consider your risk tolerance
+                accordingly. Play responsibly.</p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.2.2/web3.min.js"></script>
+    <script src="./slots.js"></script>
+    <script src="./constants.js"></script>
+    <script src="./web3.js"></script>
+</body>
+
+</html>

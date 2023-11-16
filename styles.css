@@ -1,0 +1,207 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Apply a pixelated font */
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #000;
+    font-size: 40px;
+    color: #fff;
+    margin: 40px;
+}
+
+p {
+    font-size: 34px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* Header styles */
+.logo-link {
+    text-decoration: none;
+    /* Remove underlines */
+    color: #fff;
+    /* Text color for the link */
+    font-family: 'Press Start 2P', cursive;
+    /* Set the desired font-family */
+    font-size: 42px;
+    /* Set the desired font size */
+    display: flex;
+    /* Add flex display for the 'com' text alignment */
+    align-items: baseline;
+    /* Align 'com' text with the baseline of 'DogeSpin' */
+}
+
+#addresss-div{
+    display: none;
+}
+
+.com {
+    font-size: 16px;
+    /* Font size for the '.com' text */
+    margin-left: 4px;
+    /* Add some spacing between 'DogeSpin' and '.com' */
+}
+
+.connect-button {
+    background-color: #22d519;
+    /* Green color for the button */
+    color: #fff;
+    /* Text color for the button */
+    border: none;
+    border-radius: 10px;
+    padding: 15px 30px;
+    /* Increase padding for a bigger button */
+    text-transform: uppercase;
+    /* Convert text to uppercase */
+    cursor: pointer;
+    font-size: 18px;
+    /* Adjust the font size as needed */
+}
+
+.connect-button:hover {
+    background-color: #4caf50;
+    /* Change color on hover */
+}
+
+/* Main content styles */
+
+main {
+    text-align: center;
+    padding: 20px;
+}
+
+.balance-box {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.balance {
+    flex: 1;
+    font-size: 18px;
+}
+
+.slot-machine {
+    margin: 0 auto;
+    width: 80%;
+    background-color: #000;
+    border: 6px dotted #f7931a;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.reels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.reel {
+    flex: 1;
+    padding: 12px;
+    border: 0px solid #f7931a;
+    border-radius: 20px;
+}
+
+.reel img {
+    width: 100%;
+    border-radius: 20px;
+    border: none;
+    /* Remove border from images */
+}
+
+.soft-green-button {
+    flex: 1;
+    padding: 20px;
+    font-size: 40px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 14px;
+    font-family: 'Press Start 2P', cursive;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #76c7c0;
+    /* Softer green */
+    color: #fff;
+}
+
+.soft-green-button:hover {
+    background-color: #4caf50;
+}
+
+.red-button {
+    flex: 1;
+    padding: 20px;
+    font-size: 40px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 14px;
+    font-family: 'Press Start 2P', cursive;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #f44336;
+    /* Red */
+    color: #fff;
+}
+
+.red-button:hover {
+    background-color: #ff5722;
+}
+
+.orange-button {
+    flex: 1;
+    padding: 20px;
+    font-size: 40px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 14px;
+    font-family: 'Press Start 2P', cursive;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: #ff9800;
+    /* Orange */
+    color: #fff;
+}
+
+.orange-button:hover {
+    background-color: #ff5722;
+}
+
+/* Footer styles */
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 40px;
+}
+
+.legal-links a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.legal-links a:hover {
+    text-decoration: underline;
+}
+
+.disclaimer {
+    margin-top: 10px;
+    margin-top: 40px;
+    font-size: 40px;
+}
+
+/* Additional styles for odds disclaimer */
+.disclaimer p {
+    font-size: 30px;
+}
