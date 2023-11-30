@@ -19,7 +19,7 @@ p {
     font-size: 34px;
 }
 
-.header{
+.header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
@@ -41,7 +41,7 @@ p {
     /* Align 'com' text with the baseline of 'DogeSpin' */
 }
 
-#addresss-div{
+#addresss-div {
     display: none;
 }
 
@@ -122,37 +122,30 @@ main {
 }
 
 .soft-green-button {
-    flex: 1;
-    padding: 20px;
-    font-size: 40px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
     margin: 14px;
-    font-family: 'Press Start 2P', cursive;
     transition: background-color 0.3s, color 0.3s;
     background-color: #76c7c0;
-    /* Softer green */
-    color: #fff;
 }
 
 .soft-green-button:hover {
     background-color: #4caf50;
 }
 
-.red-button {
+.btn{
     flex: 1;
-    padding: 20px;
+    padding: 10px 20px;
     font-size: 40px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    margin: 14px;
     font-family: 'Press Start 2P', cursive;
-    transition: background-color 0.3s, color 0.3s;
-    background-color: #f44336;
-    /* Red */
     color: #fff;
+}
+
+.red-button {
+    transition: background-color 0.3s, color 0.3s;
+    margin: 14px;
+    background-color: #f44336;
 }
 
 .red-button:hover {
@@ -160,18 +153,9 @@ main {
 }
 
 .orange-button {
-    flex: 1;
-    padding: 20px;
-    font-size: 40px;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
     margin: 14px;
-    font-family: 'Press Start 2P', cursive;
     transition: background-color 0.3s, color 0.3s;
     background-color: #ff9800;
-    /* Orange */
-    color: #fff;
 }
 
 .orange-button:hover {
@@ -204,4 +188,69 @@ footer {
 /* Additional styles for odds disclaimer */
 .disclaimer p {
     font-size: 30px;
+}
+
+
+/* Modal container */
+.modal {
+    display: none;
+    /* Hide by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scrolling if needed */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black background with opacity */
+}
+
+/* Modal content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* Center vertically and horizontally */
+    padding: 50px 20px 30px;
+    border: 1px solid #888;
+    width: 350px;
+    color: #000;
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    position: absolute;
+    right: 25px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.load-wc-wrap>div{
+    display: flex;
+    justify-content: center;
+}
+
+.load-wc-wrap input{
+    width: 30px;
+    height: 30px;
+}
+
+#confirm-load{
+    background-color: green;
+    margin-top: 15px;
 }

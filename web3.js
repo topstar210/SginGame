@@ -1,44 +1,104 @@
-async function spinSlotMachine(contract) {
+let web3, contract, userAddress;
+
+// Define the images for the slot machine reels
+const reelImages = [
+	"./reel/1.png",
+	"./reel/2.png",
+	"./reel/3.png",
+	"./reel/4.png",
+	"./reel/5.png",
+	"./reel/6.png",
+	"./reel/7.png",
+];
+// Variables to track the current state of the slot machine
+let isSpinning = false;
+
+let currentSpinResult = [0, 0, 0]; // Initialize with default values
+
+// Get the modal
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("load-dogespin-button");
+var confirmLoadBtn = document.getElementById("confirm-load");
+var closespan = document.getElementsByClassName("close")[0];
+
+btn.onclick = function () {
+	modal.style.display = "block";
+}
+// When the user clicks on the close button, close the modal
+closespan.onclick = function () {
+	modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+	}
+}
+
+confirmLoadBtn.onclick = function () {
+	var loadWCVal = document.querySelector('input[name="load-wc"]:checked').value;
+	// Call the contract's getGreeting function
+	contract.methods.depositWDOGE(loadWCVal).send({from: userAddress})
+		.then(result => console.log(result))
+		.catch(error => console.error(error));
+}
+
+function spinSlotMachine() {
 	if (isSpinning) return; // Prevent multiple spins
 
 	isSpinning = true;
 	// Simulate spinning by changing the images rapidly
-
-	const reelElements = document.querySelectorAll('.reel img');
+	const reelElements = document.querySelectorAll(".reel img");
 	const spinDuration = 3000; // Adjust the duration as needed
 
-	// Call the spin function on your contract
-
-	try {
-		await contract.methods.spin().send({ from: userAddress, value: spinCost });
-		const spinResult = await contract.methods.wDOGEBalances(userAddress).call();
-		// Update the currentSpinResult with the result from the contract
-
-		currentSpinResult = spinResult;
-	} catch (error) {
-		console.error(error);
-		isSpinning = false;
-		return;
+	// Generate random results (0 to reelImages.length - 1) for each reel
+	const randomResults = [];
+	for (let i = 0; i < 3; i++) {
+		randomResults.push(Math.floor(Math.random() * reelImages.length));
 	}
-	// Perform the spinning animation (modify as needed)
-	// ...
-	// Update the slot machine display
+	// Perform the spinning animation
+	const startTime = Date.now();
+	function spin() {
+		const currentTime = Date.now();
+		const elapsedTime = currentTime - startTime;
+		if (elapsedTime >= spinDuration) {
+			// Stop spinning and display the result
+			isSpinning = false;
+			currentSpinResult = randomResults;
+			updateSlotMachine();
+			return;
+		}
+		// Rotate the images
+		for (let i = 0; i < reelElements.length; i++) {
+			const newIndex = (randomResults[i] + Math.floor(elapsedTime / 100)) % reelImages.length;
+			reelElements[i].src = reelImages[newIndex];
+		}
+		requestAnimationFrame(spin);
+	}
+	spin();
+	console.log('randomResults ==> ', randomResults);
+}
 
-	updateSlotMachine();
+// Function to update the slot machine display based on the current result
+function updateSlotMachine() {
+	const reelElements = document.querySelectorAll(".reel img");
+	for (let i = 0; i < reelElements.length; i++) {
+		reelElements[i].src = reelImages[currentSpinResult[i]];
+	}
 }
 
 async function contractFunc() {
-	const web3 = new Web3(window.ethereum);
+	web3 = new Web3(window.ethereum);
+	contract = new web3.eth.Contract(abi, contractAddress);
 
 	// Get the user's Ethereum address
 	const accounts = await web3.eth.getAccounts();
-	const userAddress = accounts[0];
+	userAddress = accounts[0];
 	const shortenedAddress = `${userAddress.substring(0, 6)}...${userAddress.substring(38)}`;
 	// Display the connected address
 	document.getElementById("connectButton").style.display = 'none';
 	document.getElementById("addresss-div").style.display = 'block';
 	document.getElementById("connected-address").innerHTML = shortenedAddress;
-
 
 	const balance = await web3.eth.getBalance(userAddress);
 	const contractBalance = await web3.eth.getBalance(contractAddress);
@@ -48,21 +108,9 @@ async function contractFunc() {
 	document.getElementById('DC-token-balance').innerHTML = parseInt(DCTokenBalance);
 
 
-	return;
-
-	// Create a contract instance
-	const spinCost = await contract.methods.spinCost().call();
-
-	document.getElementById('DC-token-balance').textContent = parseInt(DCTokenBalance);
-	document.getElementById('wDOGE-balance').textContent = parseInt(wDogeBalance);
-	document.getElementById('spin-cost').textContent = `${spinCost} wDOGE`;
 	// Enable the spin button
-
 	document.getElementById('spin-button').removeAttribute('disabled');
-	document.getElementById('spin-button').addEventListener('click', () => spinSlotMachine(contract));
-	// Add a click event listener to the "Connect" button
-
-	document.getElementById('connectButton').addEventListener('click', connectToMetamask);
+	document.getElementById('spin-button').addEventListener('click', () => spinSlotMachine());
 }
 
 // Function to initialize the app after connecting to MetaMask

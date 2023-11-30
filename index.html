@@ -40,11 +40,35 @@
                 </div>
             </div>
             <div class="buttons">
-                <button id="cash-out-button" class="soft-green-button">Cash Out</button>
-                <button id="spin-button" class="red-button">Spin</button>
+                <button id="cash-out-button" class="soft-green-button btn">Cash Out</button>
+                <button id="spin-button" class="red-button btn">Spin</button>
             </div>
             <div>
-                <button id="load-dogespin-button" class="orange-button">Load DogeSpin</button>
+                <button id="load-dogespin-button" class="orange-button btn">Load DogeSpin</button>
+            </div>
+        </div>
+        <!-- Modal container -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="load-wc-wrap">
+                    <div>
+                        <label for="3wc">
+                            <input type="radio" name="load-wc" id="3wc" value="3" checked />
+                            3 wDOGE
+                        </label>
+                    </div>
+                    <div>
+                        <label for="6wc">
+                            <input type="radio" name="load-wc" id="6wc" value="6" />
+                            6 wDOGE
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <button id="confirm-load" class="btn">Confirm</button>
+                </div>
             </div>
         </div>
     </main>
@@ -68,7 +92,6 @@
         </div>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.2.2/web3.min.js"></script>
-    <script src="./slots.js"></script>
     <script src="./constants.js"></script>
     <script src="./web3.js"></script>
 </body>
