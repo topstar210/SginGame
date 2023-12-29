@@ -41,6 +41,12 @@ p {
     /* Align 'com' text with the baseline of 'DogeSpin' */
 }
 
+.logo{
+    display: flex;
+    align-items: end;
+    gap: 14px;
+}
+
 #addresss-div {
     display: none;
 }
