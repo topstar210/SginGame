@@ -254,3 +254,7 @@ footer {
     background-color: green;
     margin-top: 15px;
 }
+
+#toast-container{
+    font-size: 18px;
+}

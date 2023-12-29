@@ -1,4 +1,4 @@
-let web3, contract, userAddress, spinToken, rewardToken;
+let web3, contract, userAddress, spinCost, spinToken, rewardToken;
 
 // Define the images for the slot machine reels
 const reelImages = [
@@ -96,8 +96,6 @@ async function spin(randomResults) {
 	const currentTime = Date.now();
 	const elapsedTime = currentTime - startTime;
 	if (elapsedTime >= spinDuration) {
-		// Stop spinning and display the result
-		isSpinning = false;
 		currentSpinResult = randomResults;
 		updateSlotMachine();
 		return;
@@ -117,7 +115,7 @@ async function spinSlotMachine() {
 	isSpinning = true;
 	reelElements = document.querySelectorAll(".reel img"); // Simulate spinning by changing the images rapidly
 
-	// Generate random results (0 to reelImages.length - 1) for each reel
+	// // Generate random results (0 to reelImages.length - 1) for each reel
 	// const randomResults = [];
 	// for (let i = 0; i < 3; i++) {
 	// 	randomResults.push(Math.floor(Math.random() * reelImages.length));
@@ -128,14 +126,19 @@ async function spinSlotMachine() {
 		const spinResTx = await contract.methods.spin().send({ from: userAddress, gas: estimatedGas + BigInt(6000) });
 		const spinRes = spinResTx.events.Spun.returnValues.result;
 		const rewardAmount = await web3.utils.fromWei(spinResTx.events.Spun.returnValues.rewardAmount, "ether");
-		console.log('rewardAmount === ', rewardAmount);
-
 		const randomResults = spinRes.map(val => parseInt(val));
+
 		startTime = Date.now();
 		await spin(randomResults);
+
+		setTimeout(()=>{
+			const rewardAmount = 0 > 0 ? toastr.info(`You earned ${rewardAmount}`) : toastr.warning(`You lost ${spinCost}`);
+		}, spinDuration)
 	} catch (error) {
 		console.error("Spin Err: ", error);
+		toastr.error(error.data.message);
 	}
+	isSpinning = false;
 	enableButton(spinBtn, 'Spin');
 }
 
@@ -146,7 +149,7 @@ async function cashOut() {
 	const amount = await web3.utils.toWei(Number(rewardBalance), "ether");
 	await contract.methods.withdrawToken(amount).send({ from: userAddress })
 		.then(result => console.log(result))
-		.catch(error => console.error(error));
+		.catch(error => toastr.error(error.data.message));
 
 	enableButton(cashOutBtn, 'Cash Out');
 }
@@ -163,7 +166,7 @@ async function depositBalance() {
 	// Call the contract's getGreeting function
 	await contract.methods.depositToken(amount).send({ from: userAddress })
 		.then(result => console.log(result))
-		.catch(error => console.error(error));
+		.catch(error => toastr.error(error.data.message));
 
 	enableButton(confirmLoadBtn, 'Confirm');
 }
@@ -182,6 +185,9 @@ async function contractFunc() {
 	contract = new web3.eth.Contract(abi, contractAddress);
 	spinToken = new web3.eth.Contract(spinTokenABI, spinTokenAddress);
 	rewardToken = new web3.eth.Contract(spinTokenABI, spinTokenAddress);
+	const spinCostBal = await contract.methods.spinCost().call();
+	spinCost = await web3.utils.fromWei(spinCostBal, "ether");
+	console.log('spinCost === ', spinCost);
 
 	// Get the user's Ethereum address
 	const accounts = await web3.eth.getAccounts();
