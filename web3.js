@@ -216,6 +216,10 @@ async function initializeApp() {
 		console.log(connectInfo);
 		contractFunc();
 	});
+	window.ethereum.on('accountschanged', (connectInfo) => {
+		console.log(connectInfo);
+		contractFunc();
+	});
 }
 
 
