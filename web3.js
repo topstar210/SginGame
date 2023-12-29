@@ -182,6 +182,9 @@ async function updateBalance() {
 
 async function contractFunc() {
 	web3 = new Web3(window.ethereum);
+	const chainID = await web3.eth.getChainId();
+	if(parseInt(chainID) !== 2000) toastr.warning("Please choose dogechain.");
+
 	contract = new web3.eth.Contract(abi, contractAddress);
 	spinToken = new web3.eth.Contract(spinTokenABI, spinTokenAddress);
 	rewardToken = new web3.eth.Contract(spinTokenABI, spinTokenAddress);
@@ -222,10 +225,9 @@ async function initializeApp() {
 		console.log(connectInfo);
 		contractFunc();
 	});
-	window.ethereum.on('accountschanged', (connectInfo) => {
-		console.log(connectInfo);
-		contractFunc();
-	});
+	
+	window.ethereum.on('chainChanged', (chainId) => window.location.reload());
+	window.ethereum.on('accountschanged', (chainId) => window.location.reload());
 }
 
 
