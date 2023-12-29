@@ -1,4 +1,4 @@
-let web3, contract, userAddress, spinToken;
+let web3, contract, userAddress, spinToken, rewardToken;
 
 // Define the images for the slot machine reels
 const reelImages = [
@@ -144,7 +144,7 @@ async function cashOut() {
 	disableButton(cashOutBtn);
 	const rewardBalance = document.getElementById('reward-balance').innerText;
 	const amount = await web3.utils.toWei(Number(rewardBalance), "ether");
-	await contract.methods.withdrawDCToken(amount).send({ from: userAddress })
+	await contract.methods.withdrawToken(amount).send({ from: userAddress })
 		.then(result => console.log(result))
 		.catch(error => console.error(error));
 
@@ -161,7 +161,7 @@ async function depositBalance() {
 	if (!chkRes) return;
 
 	// Call the contract's getGreeting function
-	await contract.methods.depositWDOGE(amount).send({ from: userAddress })
+	await contract.methods.depositToken(amount).send({ from: userAddress })
 		.then(result => console.log(result))
 		.catch(error => console.error(error));
 
@@ -169,8 +169,8 @@ async function depositBalance() {
 }
 
 async function updateBalance() {
-	const balance = await contract.methods.wDOGEBalances(userAddress).call();
-	const dcBalance = await contract.methods.DCBalances(userAddress).call();
+	const balance = await contract.methods.spinTkBalances(userAddress).call();
+	const dcBalance = await contract.methods.rewardTkBalances(userAddress).call();
 	const spinTkBalance = await web3.utils.fromWei(balance, "ether");
 	const rewardTkBalance = await web3.utils.fromWei(dcBalance, "ether");
 	document.getElementById('spin-balance').innerHTML = Number(spinTkBalance).toFixed(2);
@@ -181,7 +181,7 @@ async function contractFunc() {
 	web3 = new Web3(window.ethereum);
 	contract = new web3.eth.Contract(abi, contractAddress);
 	spinToken = new web3.eth.Contract(spinTokenABI, spinTokenAddress);
-	rewardToken = new web3.eth.Contract(rewardTokenABI, rewardTokenAddress);
+	rewardToken = new web3.eth.Contract(spinTokenABI, spinTokenAddress);
 
 	// Get the user's Ethereum address
 	const accounts = await web3.eth.getAccounts();
