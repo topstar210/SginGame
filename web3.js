@@ -40,21 +40,7 @@ window.onclick = function (event) {
 }
 
 // handle click deposit button
-confirmLoadBtn.onclick = async function () {
-	disableButton(confirmLoadBtn);
-	const loadWCVal = document.querySelector('input[name="load-wc"]:checked').value;
-	const amount = await web3.utils.toWei(loadWCVal, "ether");
-
-	const chkRes = await checkAllowanceAndApprove(amount);
-	if (!chkRes) return;
-
-	// Call the contract's getGreeting function
-	await contract.methods.depositWDOGE(amount).send({ from: userAddress })
-		.then(result => console.log(result))
-		.catch(error => console.error(error));
-
-	enableButton(confirmLoadBtn, 'Confirm');
-}
+confirmLoadBtn.onclick = () => depositBalance()
 
 // handle click "spin" button
 spinBtn.onclick = () => spinSlotMachine();
@@ -121,7 +107,7 @@ async function spin(randomResults) {
 		const newIndex = (randomResults[i] + Math.floor(elapsedTime / 100)) % reelImages.length;
 		reelElements[i].src = reelImages[newIndex];
 	}
-	requestAnimationFrame(()=>spin(randomResults));
+	requestAnimationFrame(() => spin(randomResults));
 }
 
 async function spinSlotMachine() {
@@ -136,9 +122,9 @@ async function spinSlotMachine() {
 	// for (let i = 0; i < 3; i++) {
 	// 	randomResults.push(Math.floor(Math.random() * reelImages.length));
 	// }
-	
+
 	try {
-		const estimatedGas = await contract.methods.spin().estimateGas({from: userAddress});
+		const estimatedGas = await contract.methods.spin().estimateGas({ from: userAddress });
 		const spinResTx = await contract.methods.spin().send({ from: userAddress, gas: estimatedGas + BigInt(6000) });
 		const spinRes = spinResTx.events.Spun.returnValues.result;
 		const rewardAmount = await web3.utils.fromWei(spinResTx.events.Spun.returnValues.rewardAmount, "ether");
@@ -155,7 +141,31 @@ async function spinSlotMachine() {
 
 // cash out function 
 async function cashOut() {
+	disableButton(cashOutBtn);
+	const rewardBalance = document.getElementById('reward-balance').innerText;
+	const amount = await web3.utils.toWei(Number(rewardBalance), "ether");
+	await contract.methods.withdrawDCToken(amount).send({ from: userAddress })
+		.then(result => console.log(result))
+		.catch(error => console.error(error));
 
+	enableButton(cashOutBtn, 'Cash Out');
+}
+
+// deposit balance
+async function depositBalance() {
+	disableButton(confirmLoadBtn);
+	const loadWCVal = document.querySelector('input[name="load-wc"]:checked').value;
+	const amount = await web3.utils.toWei(loadWCVal, "ether");
+
+	const chkRes = await checkAllowanceAndApprove(amount);
+	if (!chkRes) return;
+
+	// Call the contract's getGreeting function
+	await contract.methods.depositWDOGE(amount).send({ from: userAddress })
+		.then(result => console.log(result))
+		.catch(error => console.error(error));
+
+	enableButton(confirmLoadBtn, 'Confirm');
 }
 
 async function updateBalance() {
