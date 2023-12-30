@@ -52,7 +52,7 @@ spinBtn.onclick = () => spinSlotMachine();
 // handle click cash out
 cashOutBtn.onclick = () => cashOut();
 
-async function logout(){
+async function logout() {
 	await window.ethereum.request({
 		"method": "wallet_revokePermissions",
 		"params": [
@@ -147,12 +147,13 @@ async function spinSlotMachine() {
 		startTime = Date.now();
 		await spin(randomResults);
 
-		setTimeout(()=>{
+		setTimeout(() => {
 			const rewardAmount = 0 > 0 ? toastr.info(`You earned ${rewardAmount}`) : toastr.warning(`You lost ${spinCost}`);
 		}, spinDuration)
 	} catch (error) {
 		console.error("Spin Err: ", error);
-		toastr.error(error.data.message);
+		toastr.error(error.message);
+		enableButton(spinBtn, 'Spin');
 	}
 	isSpinning = false;
 	enableButton(spinBtn, 'Spin');
@@ -165,7 +166,10 @@ async function cashOut() {
 	const amount = await web3.utils.toWei(Number(rewardBalance), "ether");
 	await contract.methods.withdrawToken(amount).send({ from: userAddress })
 		.then(result => console.log(result))
-		.catch(error => toastr.error(error.data.message));
+		.catch(error => {
+			toastr.error(error.message)
+			enableButton(cashOutBtn, 'Cash Out');
+		});
 
 	enableButton(cashOutBtn, 'Cash Out');
 }
@@ -182,7 +186,10 @@ async function depositBalance() {
 	// Call the contract's getGreeting function
 	await contract.methods.depositToken(amount).send({ from: userAddress })
 		.then(result => console.log(result))
-		.catch(error => toastr.error(error.data.message));
+		.catch(error => {
+			enableButton(confirmLoadBtn, 'Confirm');
+			toastr.error(error.message)
+		});
 
 	enableButton(confirmLoadBtn, 'Confirm');
 }
@@ -199,7 +206,7 @@ async function updateBalance() {
 async function contractFunc() {
 	web3 = new Web3(window.ethereum);
 	const chainID = await web3.eth.getChainId();
-	if(parseInt(chainID) !== 2000) toastr.warning("Please choose dogechain.");
+	if (parseInt(chainID) !== 2000) toastr.warning("Please choose dogechain.");
 
 	contract = new web3.eth.Contract(abi, contractAddress);
 	spinToken = new web3.eth.Contract(spinTokenABI, spinTokenAddress);
@@ -241,7 +248,7 @@ async function initializeApp() {
 		console.log(connectInfo);
 		contractFunc();
 	});
-	
+
 	window.ethereum.on('chainChanged', (chainId) => window.location.reload());
 	window.ethereum.on('accountschanged', (chainId) => window.location.reload());
 }
@@ -252,7 +259,7 @@ async function connectToMetamask() {
 	if (window.ethereum) {
 		try {
 			await window.ethereum.request({ method: 'eth_requestAccounts' });
-			contractFunc();
+			window.location.reload();
 			toastr.info('Connected to Metamask!');
 		} catch (error) {
 			console.error(error);
