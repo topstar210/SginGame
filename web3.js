@@ -23,6 +23,7 @@ const btn = document.getElementById("load-dogespin-button");
 const spinBtn = document.getElementById('spin-button');
 const cashOutBtn = document.getElementById('cash-out-button');
 const confirmLoadBtn = document.getElementById("confirm-load");
+const logoutBtn = document.getElementById("logout");
 const closespan = document.getElementsByClassName("close")[0];
 
 btn.onclick = function () {
@@ -39,6 +40,9 @@ window.onclick = function (event) {
 	}
 }
 
+// handle click logout
+logoutBtn.onclick = () => logout()
+
 // handle click deposit button
 confirmLoadBtn.onclick = () => depositBalance()
 
@@ -47,6 +51,18 @@ spinBtn.onclick = () => spinSlotMachine();
 
 // handle click cash out
 cashOutBtn.onclick = () => cashOut();
+
+async function logout(){
+	await window.ethereum.request({
+		"method": "wallet_revokePermissions",
+		"params": [
+			{
+				"eth_accounts": {}
+			}
+		]
+	});
+	window.location.reload();
+}
 
 
 // Check allowance and approve the token
@@ -198,7 +214,7 @@ async function contractFunc() {
 	const shortenedAddress = `${userAddress.substring(0, 6)}...${userAddress.substring(38)}`;
 	// Display the connected address
 	document.getElementById("connectButton").style.display = 'none';
-	document.getElementById("addresss-div").style.display = 'block';
+	document.getElementById("addresss-div").style.display = 'flex';
 	document.getElementById("connected-address").innerHTML = shortenedAddress;
 
 	updateBalance();
@@ -208,14 +224,14 @@ async function contractFunc() {
 async function initializeApp() {
 	// Check if web3 is already initialized
 	if (!window.ethereum.isMetaMask) {
-		alert("You need to install Matamast first.");
+		toastr.info("You need to install Matamast first.");
 	}
 
 	if (typeof window.ethereum !== 'undefined') {
-		await window.ethereum.enable();
+		// await window.ethereum.enable();
 		contractFunc();
 	} else {
-		alert('Web3 is not initialized. Please connect to MetaMask first.');
+		toastr.info('Web3 is not initialized. Please connect to MetaMask first.');
 		document.getElementById('reward-balance').innerText = "0"
 		document.getElementById('spin-balance').innerText = "0"
 		return;
@@ -236,13 +252,14 @@ async function connectToMetamask() {
 	if (window.ethereum) {
 		try {
 			await window.ethereum.request({ method: 'eth_requestAccounts' });
-			alert('Connected to Metamask!');
+			contractFunc();
+			toastr.info('Connected to Metamask!');
 		} catch (error) {
 			console.error(error);
-			alert('Error connecting to Metamask. Please make sure it is installed and unlocked.');
+			toastr.info('Error connecting to Metamask. Please make sure it is installed and unlocked.');
 		}
 	} else {
-		alert('Metamask is not installed. Please install it to use this feature.');
+		toastr.info('Metamask is not installed. Please install it to use this feature.');
 	}
 }
 // Add a click event listener to the button

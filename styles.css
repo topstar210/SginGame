@@ -49,6 +49,11 @@ p {
 
 #addresss-div {
     display: none;
+    gap: 18px;
+}
+
+#logout{
+    cursor: pointer;
 }
 
 .com {
