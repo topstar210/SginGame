@@ -139,7 +139,7 @@ async function spinSlotMachine() {
 
 	try {
 		const estimatedGas = await contract.methods.spin().estimateGas({ from: userAddress });
-		const spinResTx = await contract.methods.spin().send({ from: userAddress, gas: estimatedGas + BigInt(6000) });
+		const spinResTx = await contract.methods.spin().send({ from: userAddress, gas: estimatedGas + BigInt(8000) });
 		const spinRes = spinResTx.events.Spun.returnValues.result;
 		const rewardAmount = await web3.utils.fromWei(spinResTx.events.Spun.returnValues.rewardAmount, "ether");
 		const randomResults = spinRes.map(val => parseInt(val));
@@ -164,7 +164,8 @@ async function cashOut() {
 	disableButton(cashOutBtn);
 	const rewardBalance = document.getElementById('reward-balance').innerText;
 	const amount = await web3.utils.toWei(Number(rewardBalance), "ether");
-	await contract.methods.withdrawToken(amount).send({ from: userAddress })
+	const estimatedGas = await contract.methods.withdrawToken(amount).estimateGas({ from: userAddress });
+	await contract.methods.withdrawToken(amount).send({ from: userAddress, gas: estimatedGas + BigInt(8000) })
 		.then(result => console.log(result))
 		.catch(error => {
 			toastr.error(error.message)
@@ -184,7 +185,8 @@ async function depositBalance() {
 	if (!chkRes) return;
 
 	// Call the contract's getGreeting function
-	await contract.methods.depositToken(amount).send({ from: userAddress })
+	const estimatedGas = await contract.methods.depositToken(amount).estimateGas({ from: userAddress });
+	await contract.methods.depositToken(amount).send({ from: userAddress, gas: estimatedGas + BigInt(8000) })
 		.then(result => console.log(result))
 		.catch(error => {
 			enableButton(confirmLoadBtn, 'Confirm');
